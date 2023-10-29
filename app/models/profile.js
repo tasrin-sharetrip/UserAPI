@@ -1,7 +1,16 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../config/db');
+const Auth = require('./auth'); // Import the Auth model
 
 const Profile = db.define('profile', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    references: {
+        model: Auth, // Referenced model
+        key: 'id',    // Referenced column
+    },
+  },
   first_name: {
     type: DataTypes.STRING,
     allowNull: false, // means This column is required

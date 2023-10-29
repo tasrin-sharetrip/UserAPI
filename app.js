@@ -10,13 +10,13 @@ app.use(express.json());
 // Import Sequelize
 const db = require('./config/db');
 
-// Import models and associate them
+/* // Import models and associate them
 const Auth = require('./app/models/auth');
 const Profile = require('./app/models/profile');
 
 // Associate the models if needed
 Auth.hasOne(Profile, { foreignKey: 'authId' });
-Profile.belongsTo(Auth, { foreignKey: 'authId' });
+Profile.belongsTo(Auth, { foreignKey: 'authId' }); */
 
 // Synchronize models with the database (creates tables if they don't exist)
 db.sync()
