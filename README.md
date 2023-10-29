@@ -1,8 +1,8 @@
 # UserAPI
-API for user registration, login, get, update, delete in ExpressJS with Sequelize ORM.
+**API for user registration, login, get, update, delete in ExpressJS with Sequelize ORM.**
 
 # 1. Create a Registration API which use the following body
-  A. first_name
+  A. first_name <br>
   B. last_name
   C. email
   D. password
