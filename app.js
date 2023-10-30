@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-require("dotenv").config()
+require("dotenv").config() // only this require will supply .env file all over project %%%
 const port = process.env.API_PORT;
 const authRoutes = require('./app/routes/authRoutes');
 const profileRoutes = require('./app/routes/profileRoutes');
@@ -10,13 +10,18 @@ app.use(express.json());
 // Import Sequelize
 const db = require('./config/db');
 
-/* // Import models and associate them
+// Import models
 const Auth = require('./app/models/auth');
 const Profile = require('./app/models/profile');
 
+/*
 // Associate the models if needed
 Auth.hasOne(Profile, { foreignKey: 'authId' });
 Profile.belongsTo(Auth, { foreignKey: 'authId' }); */
+
+// Defining one to one relationship
+Auth.hasOne(Profile);
+Profile.belongsTo(Auth);
 
 // Synchronize models with the database (creates tables if they don't exist)
 db.sync()
@@ -28,8 +33,8 @@ db.sync()
 });
 
 // Register your routes
-//app.use('/auth', authRoutes);
-//app.use('/profile', profileRoutes);
+app.use('/auth', authRoutes);
+// app.use('/profile', profileRoutes);
 
 
 app.get('/', (req, res) => {
