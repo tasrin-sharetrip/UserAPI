@@ -10,7 +10,7 @@ const Profile = db.define('profile', {
         model: Auth, // Referenced model
         key: 'id',    // Referenced column
     },
-  },
+  }, 
   first_name: {
     type: DataTypes.STRING,
     allowNull: false, // means This column is required

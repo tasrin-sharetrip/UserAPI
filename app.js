@@ -14,17 +14,14 @@ const db = require('./config/db');
 const Auth = require('./app/models/auth');
 const Profile = require('./app/models/profile');
 
-/*
-// Associate the models if needed
-Auth.hasOne(Profile, { foreignKey: 'authId' });
-Profile.belongsTo(Auth, { foreignKey: 'authId' }); */
 
-// Defining one to one relationship
-Auth.hasOne(Profile);
-Profile.belongsTo(Auth);
+/* // Associate the models if needed
+Auth.hasOne(Profile, { foreignKey: 'authId' });
+Profile.belongsTo(Auth, { foreignKey: 'authId' });
+ */
 
 // Synchronize models with the database (creates tables if they don't exist)
-db.sync()
+db.sync() //{force: true}
   .then(() => {
     console.log('Database synchronized');
   })
@@ -34,7 +31,7 @@ db.sync()
 
 // Register your routes
 app.use('/auth', authRoutes);
-// app.use('/profile', profileRoutes);
+app.use('/profile', profileRoutes);
 
 
 app.get('/', (req, res) => {
