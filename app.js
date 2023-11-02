@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-require("dotenv").config() // only this require will supply .env file all over project %%%
+require("dotenv").config() // only this require will supply .env file all over project(I think)
 const port = process.env.API_PORT;
 const authRoutes = require('./app/routes/authRoutes');
 const profileRoutes = require('./app/routes/profileRoutes');
@@ -16,9 +16,9 @@ const Profile = require('./app/models/profile');
 
 
 /* // Associate the models if needed
-Auth.hasOne(Profile, { foreignKey: 'authId' });
-Profile.belongsTo(Auth, { foreignKey: 'authId' });
- */
+  Auth.hasOne(Profile, { foreignKey: 'authId' });
+  Profile.belongsTo(Auth, { foreignKey: 'authId' });
+*/
 
 // Synchronize models with the database (creates tables if they don't exist)
 db.sync() //{force: true}

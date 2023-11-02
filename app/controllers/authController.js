@@ -17,11 +17,20 @@ const db = require('../../config/db');
 
 //register API
 module.exports.register = async(req, res) => {
-    const {first_name, last_name, email, password, NID, profile_photo, age, marital_status} = req.body;
+    const {first_name, last_name, email, password, NID, age, marital_status} = req.body;
     try {
+        console.log(req.file);
+
         // Hash the password
-        //process.env.SALT_HASH_PASS
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Handle photo upload with Multer
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: 'No file uploaded' });
+        }
+  
+        // Save the file path to the profile_photo field
+        const profile_photo = req.file.path;
 
         // Start the transaction
         /*
@@ -41,30 +50,29 @@ module.exports.register = async(req, res) => {
         
             // create a user in the profile table
             await Profile.create({id: authUser.id, first_name, last_name, NID, profile_photo, age, marital_status }, { transaction: t });
-            res.status(200).json({ success: true, message : "User Registered Successfully"});
+            return res.status(200).json({ success: true, message : "User Registered Successfully"});
         });
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({success: false, message: "Registration Failed"});
+        return res.status(500).json({success: false, message: "Registration Failed"});
     }
 }
 
 //login API
 module.exports.login = async (req, res) => {
     const {email, password} = req.body;
-
     try {
         // find the user by email
         const user = await Auth.findOne({ where : {email} });
         if(!user){
-            res.status(401).json({success: false, message: "Authentication Failed"});
+            return res.status(401).json({success: false, message: "Authentication Failed"});
         }
         
         // password given during login & user.password coming from auth table
         const isPasswordValid = await bcrypt.compare(password, user.password); 
         if(!isPasswordValid){
-            res.status(401).json({success: false, message: "Authentication Failed"});
+            return res.status(401).json({success: false, message: "Authentication Failed"});
         }
 
         /*
@@ -75,7 +83,7 @@ module.exports.login = async (req, res) => {
         user.auth_token = newAuthToken;
         await user.save();
         user.password = undefined; // it will not be present in response
-        res.status(200).json({ success: true, message:"Login Successful", user: user,  auth_token: newAuthToken });
+        res.status(200).json({ success: true, message:"Login Successful", user: user });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Authentication failed' });
